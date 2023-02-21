@@ -9,6 +9,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
@@ -37,7 +38,7 @@ public class RegistrationController {
     }
 
     @PostMapping
-    public String processRegistration(RegistrationForm form) {
+    public String processRegistration(@RequestBody RegistrationForm form) {
         userRepository.save(User.builder()
                 .username(form.getUsername())
                 .password(passwordEncoder.encode(form.getPassword()))
