@@ -1,7 +1,7 @@
 package com.springinaction.tacos.data;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.springinaction.tacos.Order;
+import com.springinaction.tacos.TacoOrder;
 import com.springinaction.tacos.Taco;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -10,7 +10,6 @@ import org.springframework.stereotype.Repository;
 
 import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 @Repository
@@ -30,18 +29,18 @@ public class JdbcOrderRepository { //implements OrderRepository {
     }
 
     //@Override
-    public Order save(Order order) {
-        order.setPlacedAt(new Date());
-        long orderId = saveOrderDetails(order);
-        order.setId(orderId);
-        order.getTacos().forEach(taco -> saveTacoOrder(taco, orderId));
-        return order;
+    public TacoOrder save(TacoOrder tacoOrder) {
+        tacoOrder.setPlacedAt(new Date());
+        long orderId = saveOrderDetails(tacoOrder);
+        tacoOrder.setId(orderId);
+        tacoOrder.getTacos().forEach(taco -> saveTacoOrder(taco, orderId));
+        return tacoOrder;
     }
 
-    private long saveOrderDetails(Order order) {
+    private long saveOrderDetails(TacoOrder tacoOrder) {
         @SuppressWarnings("unchecked")
-        Map<String, Object> values = objectMapper.convertValue(order, Map.class);
-        values.put("placedAt", order.getPlacedAt());
+        Map<String, Object> values = objectMapper.convertValue(tacoOrder, Map.class);
+        values.put("placedAt", tacoOrder.getPlacedAt());
 
         return orderInserter.executeAndReturnKey(values).longValue();
     }

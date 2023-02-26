@@ -1,7 +1,7 @@
 package com.springinaction.tacos.web;
 
 import com.springinaction.tacos.Ingredient;
-import com.springinaction.tacos.Order;
+import com.springinaction.tacos.TacoOrder;
 import com.springinaction.tacos.Taco;
 import com.springinaction.tacos.data.IngredientRepository;
 import com.springinaction.tacos.data.TacoRepository;
@@ -34,8 +34,8 @@ public class DesignTacoController {
     private final TacoRepository tacoRepository;
 
     @ModelAttribute(name = "order")
-    public Order order() {
-        return new Order();
+    public TacoOrder order() {
+        return new TacoOrder();
     }
 
     @ModelAttribute(name = "taco")
@@ -56,12 +56,12 @@ public class DesignTacoController {
     }
 
     @PostMapping
-    public String processDesign(@Valid Taco design, Errors errors, @ModelAttribute Order order) {
+    public String processDesign(@Valid Taco design, Errors errors, @ModelAttribute TacoOrder tacoOrder) {
         if (errors.hasErrors()) {
             return "design";
         }
         Taco saved = tacoRepository.save(design);
-        order.addDesign(saved);
+        tacoOrder.addDesign(saved);
         return "redirect:/orders/current";
     }
 

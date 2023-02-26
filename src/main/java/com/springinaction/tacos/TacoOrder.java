@@ -1,6 +1,9 @@
 package com.springinaction.tacos;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.CreditCardNumber;
 
 import javax.persistence.Entity;
@@ -8,6 +11,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.PrePersist;
 import javax.persistence.Table;
 import javax.validation.constraints.Digits;
@@ -20,14 +24,20 @@ import java.util.List;
 
 @Data
 @Entity
+@Builder(toBuilder = true)
 @Table(name = "Taco_Order")
-public class Order implements Serializable {
+@NoArgsConstructor
+@AllArgsConstructor
+public class TacoOrder implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+    @ManyToOne
+    private User user;
     private Date placedAt;
+
     @NotBlank(message="Name is required")
     private String deliveryName;
 
